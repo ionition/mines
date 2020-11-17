@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Calcusrator 1.0</title>
+	<style type="text/css">
+		section {
+			display: flex;
+			justify-content: center;
+			width: 100%;
+		}
+		.container {
+			width: 500px;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+		.cell {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: #000000;
+			width: 100px;
+			height: 90px;
+			color: #FFFFFF;
+			font-size: 20px;
+			font-family: 'Arial', sans-serif;
+		}
+		.cell:hover {
+			opacity: 0.8;
+			transition: 0.3s;
+		}
+		.grayblock {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: flex-end;
+			background-color: #212121;
+			width: 100%;
+			height: 100px;
+			text-align: center;
+			padding-left: 30px;
+		}
+		.input {
+			height: 60px;
+			width: 100%;
+			font-size: 30px;
+			background-color: #525050;
+			color: #FFFFFF;
+		}
+		.redbg {
+			background-color: #5C0000;    /*      */
+		}
+		.result {
+			background-color: #8A6000;
+		}
+		::placeholder {
+			color: #FFFFFF;
+			opacity: 0.5;
+		}
+		.operation {
+			width: 100px;
+			font-size: 20px;
+			color: #fff;
+		}
+	</style>
+</head>
+<body>
+	<section>
+		<div class="container">
+			<div class="grayblock">
+				<input type="text" class="input" name="display" disabled placeholder="0"> <span class="operation"></span>
+			</div>
+			<div class="cell number">
+				1
+			</div>
+			<div class="cell number">
+				2
+			</div>
+			<div class="cell number">
+				3
+			</div>
+			<div class="cell" onclick="square()">
+				&radic;
+			</div>
+			<div class="cell redbg">
+				C
+			</div>
+			<div class="cell number">
+				4
+			</div>
+			<div class="cell number">
+				5
+			</div>
+			<div class="cell number">
+				6
+			</div>
+			<div class="cell" onclick="divide()">
+				&divide;
+			</div>
+			<div class="cell" onclick="multipli()">
+				&times;
+			</div>
+			<div class="cell number">
+				7
+			</div>
+			<div class="cell number">
+				8
+			</div>
+			<div class="cell number">
+				9
+			</div>
+			<div class="cell" onclick="summ()">
+				+
+			</div>
+			<div class="cell" onclick="min()">
+				-
+			</div>
+			<div class="cell">
+			</div>
+			<div class="cell number">
+				0
+			</div>
+			<div class="cell" onclick="dot()">
+				.
+			</div>
+			<div class="cell" onclick="power()">
+				X<sup>n</sup>
+			</div>
+			<div class="cell result" onclick="result()">
+				=
+			</div>
+		</div>
+	</section>
+	<script type="text/javascript">
+		/*var inp = document.querySelector('input[name=display]'),
+            cells = document.querySelectorAll('.write'),
+            firstUse = true;
+            cells.forEach((cell) => {
+                cell.addEventListener('click', function() {
+                    if(firstUse == true){
+                        inp.value = '';
+                        firstUse = false;
+                    }
+                    	inp.value += this.textContent.trim();
+                })
+			})
+		*/
+		var inp = document.querySelector('input[name=display]'),
+			firstUse = true,
+			numbers = document.querySelectorAll('.number'), 
+			operator = document.querySelector('.operation'),
+			x = 0.1,
+			k = 0,
+			y = 0.1,
+			final = 0.1;
+
+
+			numbers.forEach((number) => {
+                number.addEventListener('click', function() {
+                    if(firstUse == true){
+                        inp.value = '';
+                        firstUse = false;
+                    }
+                    inp.value += this.textContent.trim();
+                })
+			})
+			function dot(){
+				if(k == 0) {
+					x = parseFloat(inp.value);
+					if(isNaN(x)){
+						x = 0;
+						inp.value += '0.';
+					}
+					else {
+					inp.value += '.';
+					}
+					k = 1;
+				}
+				if(k == 2) {
+					y = parseFloat(inp.value);
+					if(isNaN(y)){
+						y = 0;
+						inp.value += '0.';
+					}
+					else {
+					inp.value += '.';
+					}
+				}
+
+			}
+			function square() {
+				if(inp.value != '') {
+					x = parseFloat(inp.value);
+					inp.value = '';
+					final = Math.sqrt(x);
+					operator.textContent = '√';
+					inp.value = final;
+					k = 2;
+				}
+			}
+			function power() {
+				x = parseFloat(inp.value);
+				if(isNaN(x)){
+					x = 0;
+				}
+				inp.value = '';
+				operator.textContent = '^';
+				k = 2;
+			}
+			function multipli() {
+				x = parseFloat(inp.value);
+				if(isNaN(x)){
+					x = 0;
+				}
+				inp.value = '';
+				operator.textContent = '×';
+				k = 2;
+			}
+			function divide() {
+				x = parseFloat(inp.value);
+				if(isNaN(x)){
+					x = 0;
+				}
+				inp.value = '';
+				operator.textContent = '÷';
+				k = 2;
+			}
+			function summ() {
+				x = parseFloat(inp.value);
+				if(isNaN(x)){
+					x = 0;
+				}
+				inp.value = '';
+				operator.textContent = '+';
+				k = 2;
+			}
+			function min() {
+				x = parseFloat(inp.value);
+				if(isNaN(x)){
+					x = 0;
+				}
+				inp.value = '';
+				operator.textContent = '-';
+				k = 2;
+			}
+			function result() {
+				y = parseFloat(inp.value);
+				if(operator.textContent != '') {
+					switch(operator.textContent) {
+						case '+': final = x + y; break;
+						case '-': final = x - y; break;
+						case '÷': final = x / y; break;
+						case '×': final = x * y; break;
+						case '^': final = Math.pow(x, y); break;
+					}
+					inp.value = final;
+					operator.textContent = '';
+					k = 0;
+					console.log(x,y);
+				}
+			}
+
+        var cancel = document.querySelector('.redbg');
+        cancel.onclick = function () {
+			inp.value = '';
+			operator.textContent = '';
+			k = 0;
+        } 
+        
+	</script>
+</body>
+</html>

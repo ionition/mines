@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+	<title>Saper</title>
+	<style type="text/css">
+		body {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 100vw;
+			height: 100vh;
+			padding: 0;
+			margin: 0;
+		}
+		section {
+			display: flex;
+			justify-content: center;
+			width: 100%;
+		}
+		.container {
+			width: 380px;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			border-left: 4px #878787 solid;
+			border-top: 4px #878787 solid;
+			border-bottom: 4px #ffffff solid;
+			border-right: 4px #ffffff solid;
+		}
+		.cell {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: #bababa;
+			width: 30px;
+			height: 30px;
+			color: #000000;
+			font-size: 28px;
+			font-family: 'VT323', monospace;
+			border-top: 4px #ffffff solid;
+			border-left: 4px #ffffff solid;
+			border-bottom: 4px #878787 solid;
+			border-right: 4px #878787 solid;
+		}
+		.cell-down{
+			border: 2px #878787 solid;
+			width: 34px;
+			height: 34px;
+		}
+		.defeat {
+			border: 2px #878787 solid;
+			width: 34px;
+			height: 34px;
+		}
+		.row {
+			display: flex;
+		}
+		.decoration {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: #bababa;
+			width: 420px;
+			height: 420px;
+		}
+		.zero{
+			color: black;
+		}
+		.one{
+			color: blue;
+		}
+		.two{
+			color: green;
+		}
+		.three{
+			color: red;
+		}
+		.four{
+			color: darkblue;
+		}
+		.five{
+			color: maroon;
+		}
+		.six{
+			color: black;
+		}
+		.seven{
+			color: green;
+		}
+		.eight{
+			color: gray;
+		}
+	</style>
+</head>
+<body>
+	<div class="decoration">
+		<div class="container">
+			<script>
+				
+				let n = 10, 
+					m = 10;
+
+				for(let i = 0; i < n; i++) {
+					document.write("<div class=row>");
+					for(let j = 0; j < m; j++) {
+						document.write(`<div class=cell data-row=${i} data-column=${j}></div>`);
+					}
+					document.write("</div>");
+				}
+				let cells = document.querySelectorAll('.cell'),
+					number, 
+					numbers = [], 
+					x = 0, 
+					bombs,
+					cellCount = 0,
+					k = 0,
+					bombsArroundCount = 0,
+					matrix = [[]],
+					z = 0,
+					rowId,
+					columnId;
+
+				function randome() {
+					if(k < 10){
+						number = Math.floor(Math.random() * 100);
+						if(cells[number].textContent != "*") {
+							cells[number].textContent = "*";
+							numbers[k] = number;
+							k++;
+							randome();
+						}
+						else {
+							randome();
+						}
+					}
+				}
+				randome();
+
+				for(let i = 0; i < n; i++) {
+					let aux = [];
+					for(let j = 0; j < m; j++) {
+						aux.push(cells[cellCount++]);
+					}
+					matrix[i] = aux;
+				}
+
+				function bombsArround(thisCell) {
+					
+					rowId = parseInt(thisCell.getAttribute("data-row"));
+					columnId = parseInt(thisCell.getAttribute("data-column"));
+						
+					try{
+						if(matrix[rowId - 1][columnId].textContent == "*"){
+							bombsArroundCount++;
+						}
+					}
+					catch(e){
+					}
+					
+					try{
+						if(matrix[rowId - 1][columnId - 1].textContent === "*"){
+							bombsArroundCount++;
+						}
+					}
+					catch(e){
+					}
+					
+					try{
+						if(matrix[rowId][columnId - 1].textContent == "*"){
+							bombsArroundCount++;
+						}
+					}
+					catch(e){
+					}
+
+					try{
+						if(matrix[rowId + 1][columnId - 1].textContent == "*"){
+							bombsArroundCount++;
+						}
+					}
+					catch(e){
+					}
+
+					try{
+						if(matrix[rowId + 1][columnId].textContent == "*"){
+							bombsArroundCount++;
+						}
+					}
+					catch(e){
+					}
+					
+					try{
+						if(matrix[rowId + 1][columnId + 1].textContent == "*"){
+							bombsArroundCount++;
+						}
+					}
+					catch(e){
+					}
+
+					try{
+						if(matrix[rowId][columnId + 1].textContent == "*"){
+							bombsArroundCount++;
+						}
+					}
+					catch(e){
+					}
+
+					try{
+						if(matrix[rowId - 1][columnId + 1].textContent == "*"){
+							bombsArroundCount++;
+						}
+					}
+					catch(e){
+					}
+					switch(bombsArroundCount) {
+						case 1: thisCell.classList.add('one'); break;
+						case 2: thisCell.classList.add('two'); break;
+						case 3: thisCell.classList.add('three'); break;
+						case 4: thisCell.classList.add('four'); break;
+						case 5: thisCell.classList.add('five'); break;
+						case 6: thisCell.classList.add('six'); break;
+						case 7: thisCell.classList.add('seven'); break;
+						case 8: thisCell.classList.add('eight'); break;
+					}
+					thisCell.classList.add('cell-down');
+					thisCell.textContent = bombsArroundCount;
+					bombsArroundCount = 0;
+				}
+				cells.forEach((cell) => {
+			        cell.addEventListener('click', defeat = function() {
+						if(this.textContent == "*") {
+						this.style.backgroundColor = "red";
+							for(let i = 0; i < k; i++){
+								cells[numbers[i]].classList.add('defeat');
+								cells[numbers[i]].innerHTML = "<img src=images/bomb.png width=25>";
+							}
+						}
+						else {
+							bombsArround(this);
+						}
+			        })
+				})
+			</script>
+		</div>
+	</div>
+</body>

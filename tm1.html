@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TM1</title>
+</head>
+<body>
+	<input type="text" name="inp1" placeholder="0"> + <input type="text" name="inp2" placeholder="0"> <input type="button" name="btn" value="="> <span class="span"></span>
+</body>
+<script type="text/javascript">
+	var inp1 = document.querySelector('input[name=inp1]'),
+		inp2 = document.querySelector('input[name=inp2]'),
+		btn = document.querySelector('input[name=btn]'),
+		span = document.querySelector('.span');
+		btn.onclick = function () {
+			var x1 = parseInt(inp1.value),
+				x2 = parseInt(inp2.value);
+			if (isNaN(x1)) {
+				x1 = 0;
+			}
+			if (isNaN(x2)) {
+				x2 = 0;
+			}
+			span.textContent = parseInt(x1) + parseInt(x2);
+			btn.disabled = true;
+		}
+		inp1.oninput = function () {
+			btn.disabled = false;
+		}
+		inp2.oninput = function () {
+			btn.disabled = false;
+		}
+
+</script>
+</html>
